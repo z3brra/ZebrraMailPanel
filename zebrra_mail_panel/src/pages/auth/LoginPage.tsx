@@ -3,12 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/features/auth";
 import { env } from "@/lib/env";
-import { isApiErrorResponse } from "@/lib/api.types";
 import {
     clearLoginAttempts,
     getLoginAttemptsInfo,
     registerFailedLoginAttempt,
 } from "@/features/auth/utils/login-attemps";
+
+import { extractUiErrorFromUnknown } from "@/services/api-error-messages";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -103,12 +104,11 @@ export function LoginPage() {
             const updated = registerFailedLoginAttempt();
             setAttemptsInfo(updated);
 
-            const data = error?.response?.data;
+            const ui = extractUiErrorFromUnknown(error);
 
-            if (isApiErrorResponse(data)) {
-                setErrorTitle(data.error.code);
-
-                setErrorMessage(data.error.message);
+            if (ui) {
+                setErrorTitle(ui.title);
+                setErrorMessage(ui.message);
             } else {
                 setErrorTitle("Erreur");
                 setErrorMessage("Impossible de se connecter. Vérifie tes identifiants et réessaie.");

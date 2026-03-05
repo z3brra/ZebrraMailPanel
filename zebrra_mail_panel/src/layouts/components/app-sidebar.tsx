@@ -33,7 +33,7 @@ function RoleBadge({ roles }: { roles: string[] }) {
 }
 
 export function AppSidebar({ collapsed, onToggleCollapse }: AppSidebarProps) {
-    const { user, logout, hasRole } = useAuth();
+    const { user, logout, hasRole, isSubmittingLogout } = useAuth();
 
     const items = navItems.filter((item) => {
         if (item.superAdminOnly) {
@@ -132,6 +132,7 @@ export function AppSidebar({ collapsed, onToggleCollapse }: AppSidebarProps) {
                     onClick={async () => {
                         await logout();
                     }}
+                    disabled={isSubmittingLogout}
                     title={collapsed ? "Déconnextion" : undefined}
                 >
                     <LogOut className="h-4 w-4" />

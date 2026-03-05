@@ -7,7 +7,9 @@ import { isApiErrorResponse } from "@/lib/api.types";
 
 type AuthState = {
     user: AuthMe | null;
-    isLoading: boolean;
+    isBootstrapping: boolean;
+    isSubmittingLogin: boolean;
+    isSubmittingLogout: boolean;
 };
 
 type AuthContextValue = AuthState & {
@@ -35,10 +37,13 @@ function isAuthFailure(error: unknown): boolean {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<AuthMe | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    
+    const [isBootstrapping, setIsBootstrapping] = useState<boolean>(false);
+    const [isSubmittingLogin, setIsSubmittingLogin] = useState<boolean>(false);
+    const [isSubmittingLogout, setIsSubmittingLogout] = useState<boolean>(false);
 
     const bootstrap = useCallback(async () => {
-        setIsLoading(true);
+        setIsBootstrapping(true);
         try {
             const me = await authService.me();
             setUser(me);
@@ -50,27 +55,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 setUser(null);
             }
         } finally {
-            setIsLoading(false);
+            setIsBootstrapping(false);
         }
     }, []);
 
     const login = useCallback(async (input: LoginInput) => {
-        setIsLoading(true);
+        setIsSubmittingLogin(true);
         try {
             const me = await authService.login(input);
             setUser(me);
         } finally {
-            setIsLoading(false);
+            setIsSubmittingLogin(false);
         }
     }, []);
 
     const logout = useCallback(async () => {
-        setIsLoading(true);
+        setIsSubmittingLogout(true);
         try {
             await authService.logout();
         } finally {
             setUser(null);
-            setIsLoading(false);
+            setIsSubmittingLogout(false);
         }
     }, []);
 
@@ -83,14 +88,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return {
             user,
             setUser,
-            isLoading,
+
+            isBootstrapping,
+            isSubmittingLogin,
+            isSubmittingLogout,
+
             isAuthenticated: !!user,
             hasRole: (role: string) => roles.includes(role),
             bootstrap,
             login,
             logout,
         };
-    }, [user, isLoading, bootstrap, login, logout]);
+    }, [user, isBootstrapping, isSubmittingLogin, isSubmittingLogout, bootstrap, login, logout]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

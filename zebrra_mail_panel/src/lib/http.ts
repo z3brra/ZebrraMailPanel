@@ -183,7 +183,7 @@ export async function login(email: string, password: string): Promise<LoginRespo
 }
 
 export async function logout(): Promise<void> {
-    await http.delete("/auth/login", { _skipAuth: true } as any);
+    await http.delete("/auth/logout", { _skipAuth: true } as any);
     tokenStore.clear();
 }
 

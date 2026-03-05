@@ -16,10 +16,10 @@ function BootSplash() {
 }
 
 export function AppLayout() {
-    const { isLoading } = useAuth();
+    const { isBootstrapping } = useAuth();
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
-    if (isLoading) {
+    if (isBootstrapping) {
         return <BootSplash />;
     }
 

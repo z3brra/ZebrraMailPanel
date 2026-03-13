@@ -18,19 +18,29 @@ type AppSidebarProps = {
     onToggleCollapse: () => void;
 };
 
-function RoleBadge({ roles }: { roles: string[] }) {
+function getRoleUi(roles: string[]) {
     const isSuperAdmin = roles.includes("ROLE_SUPER_ADMIN");
-    const label = isSuperAdmin ? "Super-admin" : "Admin";
 
-    const bg = isSuperAdmin ? "bg-[var(--chart-2)]": "bg-[var(--chart-5)]";
+    return {
+        label: isSuperAdmin ? "Super admin" : "Admin",
+        badgeClass: isSuperAdmin
+            ? "bg-badge-role-super text-badge-role-super-foreground"
+            : "bg-badge-role-admin text-badge-role-admin-foreground",
+        isSuperAdmin,
+    };
+}
+
+function RoleBadge({ roles }: { roles: string[] }) {
+    const { label, badgeClass } = getRoleUi(roles);
 
     return (
-        <Badge className={cn("gap-1 text-white border-transparent", bg)} variant="secondary">
+        <Badge className={cn("gap-1 border-transparent", badgeClass)} variant="secondary">
             <Shield className="h-3.5 w-3.5" />
             <span>{label}</span>
         </Badge>
-    );
+    )
 }
+
 
 export function AppSidebar({ collapsed, onToggleCollapse }: AppSidebarProps) {
     const { user, logout, hasRole, isSubmittingLogout } = useAuth();
@@ -74,15 +84,20 @@ export function AppSidebar({ collapsed, onToggleCollapse }: AppSidebarProps) {
                 { user ? (
                     collapsed ? (
                         <div className="flex justify-center">
-                            <div
-                                className={cn(
-                                    "h-8 w-8 rounded-md flex items-center justify-center text-white",
-                                    user.roles.includes("ROLE_SUPER_ADMIN") ? "bg-[var(--chart-2)]": "bg-[var(--chart-5)]"
-                                )}
-                                title={user.roles.includes("ROLE_SUPER_ADMIN") ? "Super-admin" : "Admin"}
-                            >
-                                <Shield className="h-4 w-4" />
-                            </div>
+                            {(() => {
+                                const { label, badgeClass } = getRoleUi(user.roles);
+                                return (
+                                    <div
+                                        className={cn(
+                                        "h-8 w-8 rounded-md flex items-center justify-center border-transparent",
+                                        badgeClass
+                                        )}
+                                        title={label}
+                                    >
+                                        <Shield className="h-4 w-4" />
+                                    </div>
+                                );
+                            })()}
                         </div>
                     ) : (
                         <div className="flex items-center justify-between gap-2">

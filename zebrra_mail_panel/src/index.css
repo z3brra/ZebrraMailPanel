@@ -19,6 +19,25 @@
   --accent-foreground: oklch(0.4865 0.2423 291.8661);
   --destructive: oklch(0.6356 0.2082 25.3782);
   --destructive-foreground: oklch(0.9838 0.0035 247.8583);
+
+  --badge-role-super: oklch(0.92 0.035 295);
+  --badge-role-super-foreground: oklch(0.28 0.12 295);
+
+  --badge-role-admin: oklch(0.92 0.028 255);
+  --badge-role-admin-foreground: oklch(0.28 0.09 255);
+
+  --badge-active: oklch(0.92 0.038 155);
+  --badge-active-foreground: oklch(0.26 0.10 155);
+
+  --badge-inactive: oklch(0.94 0.006 264);
+  --badge-inactive-foreground: oklch(0.46 0.03 264);
+
+  --badge-deleted: oklch(0.93 0.040 80);
+  --badge-deleted-foreground: oklch(0.32 0.11 80);
+
+  --badge-mailbox: oklch(0.92 0.030 200);
+  --badge-mailbox-foreground: oklch(0.28 0.10 200);
+
   --border: oklch(0.9278 0.0058 264.5314);
   --input: oklch(0.9278 0.0058 264.5314);
   --ring: oklch(0.4865 0.2423 291.8661);
@@ -74,6 +93,25 @@
   --accent-foreground: oklch(0.6083 0.2172 297.1153);
   --destructive: oklch(0.6356 0.2082 25.3782);
   --destructive-foreground: oklch(0.9838 0.0035 247.8583);
+
+  --badge-role-super: oklch(0.30 0.060 295);
+  --badge-role-super-foreground: oklch(0.92 0.040 295);
+
+  --badge-role-admin: oklch(0.28 0.050 255);
+  --badge-role-admin-foreground: oklch(0.92 0.030 255);
+
+  --badge-active: oklch(0.29 0.060 155);
+  --badge-active-foreground: oklch(0.92 0.050 155);
+
+  --badge-inactive: oklch(0.26 0.015 264);
+  --badge-inactive-foreground: oklch(0.82 0.020 264);
+
+  --badge-deleted: oklch(0.31 0.060 80);
+  --badge-deleted-foreground: oklch(0.94 0.050 80);
+
+  --badge-mailbox: oklch(0.29 0.050 200);
+  --badge-mailbox-foreground: oklch(0.92 0.040 200);
+
   --border: oklch(0.2505 0.0293 299.5707);
   --input: oklch(0.2505 0.0293 299.5707);
   --ring: oklch(0.6083 0.2172 297.1153);
@@ -127,6 +165,25 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-badge-role-super: var(--badge-role-super);
+  --color-badge-role-super-foreground: var(--badge-role-super-foreground);
+
+  --color-badge-role-admin: var(--badge-role-admin);
+  --color-badge-role-admin-foreground: var(--badge-role-admin-foreground);
+
+  --color-badge-active: var(--badge-active);
+  --color-badge-active-foreground: var(--badge-active-foreground);
+
+  --color-badge-inactive: var(--badge-inactive);
+  --color-badge-inactive-foreground: var(--badge-inactive-foreground);
+
+  --color-badge-deleted: var(--badge-deleted);
+  --color-badge-deleted-foreground: var(--badge-deleted-foreground);
+
+  --color-badge-mailbox: var(--badge-mailbox);
+  --color-badge-mailbox-foreground: var(--badge-mailbox-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

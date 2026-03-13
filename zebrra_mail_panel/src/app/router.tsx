@@ -9,6 +9,7 @@ import { LoginPage } from "@/pages/auth/LoginPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { ForbiddenPage } from "@/pages/ForbiddenPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import { AdminsPage } from "@/pages/super-admin/AdminsPage";
 
 export const router = createBrowserRouter([
     {
@@ -28,8 +29,8 @@ export const router = createBrowserRouter([
                     {
                         element: <RoleGuard anyOf={["ROLE_SUPER_ADMIN"]} />,
                         children: [
-                            { path: "/super-admin", element: <div className="p-6">Zone super-admin</div> },
-                        ],
+                            { path: "/admins", element: <AdminsPage /> },
+                        ]
                     },
 
                     { path: "/forbidden", element: <ForbiddenPage /> },

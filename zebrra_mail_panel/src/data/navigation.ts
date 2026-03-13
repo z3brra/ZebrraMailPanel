@@ -19,13 +19,13 @@ export const navItems: NavItem[] = [
         icon: LayoutDashboard,
     },
     {
-        key: "super-admin",
-        to: "/super-admin",
-        label: "Super-admin",
-        description: "Outils réservés au super-admin.",
+        key: "admins",
+        to: "/admins",
+        label: "Admins",
+        description: "Créer et gérer les comptes admin.",
         icon: Shield,
         superAdminOnly: true,
-    },
+    }
 ];
 
 export function getSectionByPath(pathname: string): NavItem | null {

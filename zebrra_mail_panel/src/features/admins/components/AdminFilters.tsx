@@ -87,6 +87,23 @@ export function AdminFilters({
             </div>
 
             <div className="w-full md:w-44">
+                <div className="text-sm mb-1">Boîte mail</div>
+                <Select
+                    value={boolToSelectValue(value.hasMailbox)}
+                    onValueChange={(v) => onChange({ ...value, hasMailbox: selectValueToBool(v) })}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Tous" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">Tous</SelectItem>
+                        <SelectItem value="true">Avec</SelectItem>
+                        <SelectItem value="false">Sans</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <div className="w-full md:w-44">
                 <div className="text-sm mb-1">Tri</div>
                 <Select
                     value={(value.sort ?? "createdAt") as AdminSort}

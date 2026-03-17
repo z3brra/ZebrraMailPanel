@@ -60,6 +60,7 @@ export type AdminSearchQuery = {
     q?: string;
     active?: boolean;
     deleted?: boolean;
+    hasMailbox?: boolean;
     sort?: AdminSort;
     order?: SortOrder;
 };

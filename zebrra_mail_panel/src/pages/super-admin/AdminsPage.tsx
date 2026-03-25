@@ -6,7 +6,10 @@ import type { AdminSearchQuery } from "@/features/admins/types/admin.types";
 import { AdminCreateDialog } from "@/features/admins/components/AdminCreateDialog";
 
 import { useAdminsList } from "@/features/admins/hooks/useAdminsList";
+import { useDeleteAdmin } from "@/features/admins/hooks/useDeleteAdmin";
+
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+
 
 export function AdminsPage() {
     const [query, setQuery] = useState<AdminSearchQuery>({
@@ -35,6 +38,13 @@ export function AdminsPage() {
         error,
         refetch
     } = useAdminsList({ query: queryDebounced, page, limit });
+
+    const { deleteAdmin, isSubmitting: isDeleting } = useDeleteAdmin();
+
+    async function handleSoftDelete(uuid: string) {
+        await deleteAdmin(uuid);
+        refetch();
+    }
 
     return (
         <div className="p-6 space-y-4">
@@ -70,8 +80,9 @@ export function AdminsPage() {
                 onView={() => {}}
                 onEnable={() => {}}
                 onDisable={() => {}}
-                onSoftDelete={() => {}}
+                onSoftDelete={handleSoftDelete}
                 onResetPassword={() => {}}
+                isDeleting={isDeleting}
             />
         </div>
     );

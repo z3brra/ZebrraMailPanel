@@ -86,5 +86,9 @@ export const adminsService = {
         await http.post("/admin/super-admin", body);
     },
 
+    async remove(uuid: string): Promise<void> {
+        await http.delete(`/admin/super-admin/${uuid}`);
+    },
+
     hasAnyFilter,
 }

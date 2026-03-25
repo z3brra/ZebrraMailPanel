@@ -18,6 +18,7 @@ type AdminItemProps = {
     onSoftDelete?: (uuid: string) => void;
     onResetPassword?: (uuid: string) => void;
     viewDisabled?: boolean;
+    isDeleting: boolean;
 }
 
 export function AdminItem({
@@ -28,6 +29,7 @@ export function AdminItem({
     onSoftDelete,
     onResetPassword,
     viewDisabled = true,
+    isDeleting,
 }: AdminItemProps) {
 
     return (
@@ -71,6 +73,7 @@ export function AdminItem({
                             onDisable={onDisable}
                             onSoftDelete={onSoftDelete}
                             onResetPassword={onResetPassword}
+                            isBusy={isDeleting}
                         />
                     </div>
                 </div>

@@ -28,6 +28,7 @@ type AdminListProps = {
     onDisable?: (uuid: string) => void;
     onSoftDelete?: (uuid: string) => void;
     onResetPassword?: (uuid: string) => void;
+    isDeleting: boolean;
 };
 
 // function buildMeta(
@@ -57,7 +58,8 @@ export function AdminList({
     onEnable,
     onDisable,
     onSoftDelete,
-    onResetPassword
+    onResetPassword,
+    isDeleting = false,
 }: AdminListProps) {
     const totalPages = meta?.totalPages ?? 1;
     const page = meta?.page ?? 1;
@@ -102,6 +104,7 @@ export function AdminList({
                                     onDisable={onDisable}
                                     onSoftDelete={onSoftDelete}
                                     onResetPassword={onResetPassword}
+                                    isDeleting={isDeleting}
                                 />
                             ))
                         )}

@@ -1,5 +1,6 @@
 import { http } from "@/lib/http";
 import type {
+    AdminCreatePayload,
     AdminListItem,
     AdminSearchQuery,
     ListResponse
@@ -28,6 +29,7 @@ function hasAnyFilter(q: AdminSearchQuery): boolean {
         (q.q !== undefined && q.q.trim() !== "") ||
         typeof q.active === "boolean" ||
         typeof q.deleted === "boolean" ||
+        // typeof q.hasMailbox === "boolean"
         typeof q.hasMailbox === "boolean" ||
         (q.sort !== undefined && q.sort !== null) ||
         (q.order !== undefined && q.order !== null)
@@ -70,6 +72,18 @@ export const adminsService = {
         );
 
         return response.data;
+    },
+
+    async create(payload: AdminCreatePayload): Promise<void> {
+        const body = buildBody({
+            email: payload.email,
+            plainPassword: payload.plainPassword,
+            roles: payload.roles,
+            active: payload.active,
+            createMailUser: payload.createMailUser,
+        });
+
+        await http.post("/admin/super-admin", body);
     },
 
     hasAnyFilter,

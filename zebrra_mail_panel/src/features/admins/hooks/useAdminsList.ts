@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { AdminListItem, AdminSearchQuery, PaginationMeta } from "../types/admin.types";
 import { adminsService } from "../services/admins.service";
 import { extractUiErrorFromUnknown } from "@/services/api-error-messages";
@@ -23,16 +23,22 @@ export function useAdminsList({ query, page, limit }: UseAdminsListArgs): UseAdm
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<{ title: string; message: string } | null>(null);
 
-    const refreshIndex = useRef(0);
-    const refetch = () => {
-        refreshIndex.current += 1;
-        setIsLoading((v) => v);
-    };
 
-    const refreshKey = useMemo(
-        () => `${refreshIndex.current}|${page}|${limit}|${JSON.stringify(query)}`,
-        [page, limit, query]
-    );
+    const [refreshKey, setRefreshKey] = useState<number>(0);
+    const refetch = () => setRefreshKey((k) => k + 1);
+
+    const queryKey = useMemo(() => JSON.stringify(query), [query]);
+
+    // const refreshIndex = useRef(0);
+    // const refetch = () => {
+    //     refreshIndex.current += 1;
+    //     setIsLoading((v) => v);
+    // };
+
+    // const refreshKey = useMemo(
+    //     () => `${refreshIndex.current}|${page}|${limit}|${JSON.stringify(query)}`,
+    //     [page, limit, query]
+    // );
 
     useEffect(() => {
         let cancelled = false;
@@ -77,7 +83,7 @@ export function useAdminsList({ query, page, limit }: UseAdminsListArgs): UseAdm
         return () => {
             cancelled = true;
         };
-    }, [refreshKey]);
+    }, [queryKey, page, limit, refreshKey]);
 
     return {
         items,

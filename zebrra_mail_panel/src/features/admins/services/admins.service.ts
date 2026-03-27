@@ -94,5 +94,11 @@ export const adminsService = {
         await http.patch(`/admin/super-admin/${uuid}/status`, { action });
     },
 
+    async resetPassword(uuid: string): Promise<{ adminUuid: string; email: string; newPassword: string }> {
+        const response = await http.post(`/admin/super-admin/${uuid}/reset-password`);
+        return response.data.data;
+    },
+
     hasAnyFilter,
+
 }

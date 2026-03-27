@@ -10,7 +10,7 @@ import { useDeleteAdmin } from "@/features/admins/hooks/useDeleteAdmin";
 
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useAdminStatus } from "@/features/admins/hooks/useAdminStatus";
-
+import { useResetAdminPassword } from "@/features/admins/hooks/useResetAdminPassword";
 
 export function AdminsPage() {
     const [query, setQuery] = useState<AdminSearchQuery>({
@@ -44,6 +44,8 @@ export function AdminsPage() {
 
     const { setStatus } = useAdminStatus();
 
+    const { resetPassword } = useResetAdminPassword();
+
     async function handleSoftDelete(uuid: string) {
         await deleteAdmin(uuid);
         refetch();
@@ -57,6 +59,10 @@ export function AdminsPage() {
     async function handleDisable(uuid: string) {
         await setStatus(uuid, "disable");
         refetch();
+    }
+
+    async function handleResetPassword(uuid: string) {
+        return await resetPassword(uuid);
     }
 
 
@@ -96,7 +102,7 @@ export function AdminsPage() {
                 onEnable={handleEnable}
                 onDisable={handleDisable}
                 onSoftDelete={handleSoftDelete}
-                onResetPassword={() => {}}
+                onResetPassword={handleResetPassword}
                 isDeleting={isDeleting}
             />
         </div>

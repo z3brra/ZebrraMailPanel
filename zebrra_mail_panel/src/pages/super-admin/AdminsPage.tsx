@@ -9,6 +9,7 @@ import { useAdminsList } from "@/features/admins/hooks/useAdminsList";
 import { useDeleteAdmin } from "@/features/admins/hooks/useDeleteAdmin";
 
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { useAdminStatus } from "@/features/admins/hooks/useAdminStatus";
 
 
 export function AdminsPage() {
@@ -41,10 +42,24 @@ export function AdminsPage() {
 
     const { deleteAdmin, isSubmitting: isDeleting } = useDeleteAdmin();
 
+    const { setStatus } = useAdminStatus();
+
     async function handleSoftDelete(uuid: string) {
         await deleteAdmin(uuid);
         refetch();
     }
+
+    async function handleEnable(uuid: string) {
+        await setStatus(uuid, "enable");
+        refetch();
+    }
+
+    async function handleDisable(uuid: string) {
+        await setStatus(uuid, "disable");
+        refetch();
+    }
+
+
 
     return (
         <div className="p-6 space-y-4">
@@ -78,8 +93,8 @@ export function AdminsPage() {
                 error={error}
                 onPageChange={setPage}
                 onView={() => {}}
-                onEnable={() => {}}
-                onDisable={() => {}}
+                onEnable={handleEnable}
+                onDisable={handleDisable}
                 onSoftDelete={handleSoftDelete}
                 onResetPassword={() => {}}
                 isDeleting={isDeleting}

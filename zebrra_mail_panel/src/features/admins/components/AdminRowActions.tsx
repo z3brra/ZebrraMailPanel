@@ -39,7 +39,9 @@ export function AdminRowActions({
     onResetPassword,
     isBusy = false,
 }: AdminRowActionsProps) {
-    const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState<boolean>(false)
+    const [confirmEnableOpen, setConfirmEnableOpen] = useState<boolean>(false);
+    const [confirmDisableOpen, setConfirmDisableOpen] = useState<boolean>(false);
 
     const canEnable = !admin.active && !admin.isDeleted;
     const canDisable = admin.active && !admin.isDeleted;
@@ -48,7 +50,17 @@ export function AdminRowActions({
 
     async function confirmDelete() {
         await onSoftDelete?.(admin.uuid);
-        setConfirmOpen(false);
+        setConfirmDeleteOpen(false);
+    }
+
+    async function confirmEnable() {
+        await onEnable?.(admin.uuid);
+        setConfirmEnableOpen(false);
+    }
+
+    async function confirmDisable() {
+        await onDisable?.(admin.uuid);
+        setConfirmDisableOpen(false);
     }
 
     return (
@@ -62,7 +74,7 @@ export function AdminRowActions({
 
                 <DropdownMenuContent align="end">
                     <DropdownMenuItem
-                        onClick={() => onEnable?.(admin.uuid)}
+                        onClick={() => setConfirmEnableOpen(true)}
                         disabled={!canEnable}
                     >
                         <CheckCircle2 className="h-4 w-4 mr-2" />
@@ -70,7 +82,7 @@ export function AdminRowActions({
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
-                        onClick={() => onDisable?.(admin.uuid)}
+                        onClick={() => setConfirmDisableOpen(true)}
                         disabled={!canDisable}
                     >
                         <Ban className="h-4 w-4 mr-2" />
@@ -90,7 +102,7 @@ export function AdminRowActions({
                     <DropdownMenuSeparator />
 
                     <DropdownMenuItem
-                        onClick={() => setConfirmOpen(true)}
+                        onClick={() => setConfirmDeleteOpen(true)}
                         disabled={!canDelete}
                     >
                         <Trash2 className="h-4 w-4 mr-2" />
@@ -99,7 +111,7 @@ export function AdminRowActions({
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+            <AlertDialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Supprimer cet admin ?</AlertDialogTitle>
@@ -120,6 +132,56 @@ export function AdminRowActions({
                             disabled={isBusy}
                         >
                             Supprimer
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={confirmEnableOpen} onOpenChange={setConfirmEnableOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Activer cet admin ?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Le compte pourra se connecter.
+                            <br />
+                            <span className="font-bold">{admin.email}</span>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isBusy}>Annuler</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={(e) => {
+                                e.preventDefault();
+                                void confirmEnable();
+                            }}
+                            disabled={isBusy}
+                        >
+                            Activer
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={confirmDisableOpen} onOpenChange={setConfirmDisableOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Désactiver cet admin ?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Le compte ne pourra plus se connecter..
+                            <br />
+                            <span className="font-bold">{admin.email}</span>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isBusy}>Annuler</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={(e) => {
+                                e.preventDefault();
+                                void confirmDisable();
+                            }}
+                            disabled={isBusy}
+                        >
+                            Désactiver
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

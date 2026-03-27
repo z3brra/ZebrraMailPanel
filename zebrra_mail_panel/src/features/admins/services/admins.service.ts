@@ -90,5 +90,9 @@ export const adminsService = {
         await http.delete(`/admin/super-admin/${uuid}`);
     },
 
+    async setStatus(uuid: string, action: "enable" | "disable"): Promise<void> {
+        await http.patch(`/admin/super-admin/${uuid}/status`, { action });
+    },
+
     hasAnyFilter,
 }

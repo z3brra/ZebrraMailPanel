@@ -9,11 +9,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// import { applyAdminQuery, paginate } from "@/features/admins/utils/admin.filters";
 import { AdminItem } from "./AdminItem";
-
-// import { ActiveBadge, DeletedBadge, MailboxBadge, RoleBadge } from "./AdminBadges";
-// import { AdminRowActions } from "./AdminRowActions";
 
 type AdminListProps = {
     items: AdminListItem[];
@@ -27,26 +23,9 @@ type AdminListProps = {
     onEnable?: (uuid: string) => void;
     onDisable?: (uuid: string) => void;
     onSoftDelete?: (uuid: string) => void;
-    onResetPassword?: (uuid: string) => void;
+    onResetPassword?: (uuid: string) => Promise<{ adminUuid: string; email: string; newPassword: string }>;
     isDeleting: boolean;
 };
-
-// function buildMeta(
-//     page: number,
-//     perPage: number,
-//     total: number,
-//     totalPages: number,
-//     query: AdminSearchQuery
-// ): PaginationMeta {
-//     return {
-//         page,
-//         perPage,
-//         total,
-//         totalPages,
-//         sort: query.sort ?? null,
-//         order: query.order ?? null,
-//     };
-// }
 
 export function AdminList({
     items,
@@ -98,7 +77,6 @@ export function AdminList({
                                 <AdminItem
                                     key={a.uuid}
                                     admin={a}
-                                    viewDisabled
                                     onView={onView}
                                     onEnable={onEnable}
                                     onDisable={onDisable}

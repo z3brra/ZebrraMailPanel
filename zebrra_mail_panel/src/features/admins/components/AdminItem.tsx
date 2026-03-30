@@ -16,7 +16,7 @@ type AdminItemProps = {
     onEnable?: (uuid: string) => void;
     onDisable?: (uuid: string) => void;
     onSoftDelete?: (uuid: string) => void;
-    onResetPassword?: (uuid: string) => void;
+    onResetPassword?: (uuid: string) => Promise<{ adminUuid: string; email: string; newPassword: string }>;
     viewDisabled?: boolean;
     isDeleting: boolean;
 }
@@ -28,7 +28,7 @@ export function AdminItem({
     onDisable,
     onSoftDelete,
     onResetPassword,
-    viewDisabled = true,
+    viewDisabled = false,
     isDeleting,
 }: AdminItemProps) {
 

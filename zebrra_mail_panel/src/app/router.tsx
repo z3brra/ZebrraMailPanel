@@ -10,6 +10,7 @@ import { DashboardPage } from "@/pages/DashboardPage";
 import { ForbiddenPage } from "@/pages/ForbiddenPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { AdminsPage } from "@/pages/super-admin/AdminsPage";
+import { AdminDetailsPage } from "@/pages/super-admin/AdminDetailsPage";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
                         element: <RoleGuard anyOf={["ROLE_SUPER_ADMIN"]} />,
                         children: [
                             { path: "/admins", element: <AdminsPage /> },
+                            { path: "/admins/:uuid", element: <AdminDetailsPage /> },
                         ]
                     },
 

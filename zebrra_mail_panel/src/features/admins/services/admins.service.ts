@@ -2,6 +2,7 @@ import { http } from "@/lib/http";
 import type {
     AdminCreatePayload,
     AdminListItem,
+    AdminRead,
     AdminSearchQuery,
     ListResponse
 } from "@/features/admins/types/admin.types";
@@ -34,6 +35,22 @@ function hasAnyFilter(q: AdminSearchQuery): boolean {
         (q.sort !== undefined && q.sort !== null) ||
         (q.order !== undefined && q.order !== null)
     );
+}
+
+async function get(uuid: string): Promise<AdminRead> {
+    const response = await http.get(`/admin/super-admin/${uuid}`);
+
+    const data = response.data.data;
+    return {
+        uuid: data.uuid,
+        email: data.email,
+        roles: data.roles,
+        active: data.active,
+        isDeleted: data.isDeleted,
+        hasMailbox: data.hasMailbox,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+    };
 }
 
 export const adminsService = {
@@ -100,5 +117,6 @@ export const adminsService = {
     },
 
     hasAnyFilter,
+    get
 
 }

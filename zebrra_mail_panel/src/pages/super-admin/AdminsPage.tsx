@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { AdminFilters } from "@/features/admins/components/AdminFilters";
 import { AdminList } from "@/features/admins/components/AdminList";
 import type { AdminSearchQuery } from "@/features/admins/types/admin.types";
@@ -13,6 +15,8 @@ import { useAdminStatus } from "@/features/admins/hooks/useAdminStatus";
 import { useResetAdminPassword } from "@/features/admins/hooks/useResetAdminPassword";
 
 export function AdminsPage() {
+    const navigate = useNavigate();
+
     const [query, setQuery] = useState<AdminSearchQuery>({
         sort: "createdAt",
         order: "desc",
@@ -65,6 +69,10 @@ export function AdminsPage() {
         return await resetPassword(uuid);
     }
 
+    function handleView(uuid: string) {
+        navigate(`/admins/${uuid}`);
+    }
+
 
 
     return (
@@ -98,7 +106,7 @@ export function AdminsPage() {
                 isLoading={isLoading}
                 error={error}
                 onPageChange={setPage}
-                onView={() => {}}
+                onView={handleView}
                 onEnable={handleEnable}
                 onDisable={handleDisable}
                 onSoftDelete={handleSoftDelete}

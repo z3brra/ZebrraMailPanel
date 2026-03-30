@@ -1,0 +1,122 @@
+import { http } from "@/lib/http";
+import type {
+    AdminCreatePayload,
+    AdminListItem,
+    AdminRead,
+    AdminSearchQuery,
+    ListResponse
+} from "@/features/admins/types/admin.types";
+
+type AdminListResponse = ListResponse<AdminListItem>;
+
+function buildBody(input: Record<string, unknown>) {
+    const out: Record<string, unknown> = {};
+
+    for (const [k, v] of Object.entries(input)) {
+        if (v === undefined || v === null) {
+            continue;
+        }
+
+        if (typeof v === "string" && v.trim() === "") {
+            continue;
+        }
+        out[k] = v;
+    }
+    return out;
+}
+
+function hasAnyFilter(q: AdminSearchQuery): boolean {
+    return (
+        (q.q !== undefined && q.q.trim() !== "") ||
+        typeof q.active === "boolean" ||
+        typeof q.deleted === "boolean" ||
+        // typeof q.hasMailbox === "boolean"
+        typeof q.hasMailbox === "boolean" ||
+        (q.sort !== undefined && q.sort !== null) ||
+        (q.order !== undefined && q.order !== null)
+    );
+}
+
+async function get(uuid: string): Promise<AdminRead> {
+    const response = await http.get(`/admin/super-admin/${uuid}`);
+
+    const data = response.data.data;
+    return {
+        uuid: data.uuid,
+        email: data.email,
+        roles: data.roles,
+        active: data.active,
+        isDeleted: data.isDeleted,
+        hasMailbox: data.hasMailbox,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+    };
+}
+
+export const adminsService = {
+    async list(params?: { page?: number; limit?: number }): Promise<AdminListResponse> {
+        const response = await http.get<AdminListResponse>("/admin/super-admin", {
+            params: buildBody({
+                page: params?.page,
+                limit: params?.limit,
+            }),
+        });
+        return response.data;
+    },
+
+    async search(
+        query: AdminSearchQuery,
+        params?: { page?: number; limit?: number }
+    ): Promise<AdminListResponse> {
+        const body = buildBody({
+            q: query.q,
+            active: query.active,
+            deleted: query.deleted,
+            hasMailbox: query.hasMailbox,
+            sort: query.sort,
+            order: query.order,
+        });
+
+        const response = await http.post<AdminListResponse>(
+            "/admin/super-admin/search",
+            body,
+            {
+                params: buildBody({
+                    page: params?.page,
+                    limit: params?.limit,
+                }),
+            }
+        );
+
+        return response.data;
+    },
+
+    async create(payload: AdminCreatePayload): Promise<void> {
+        const body = buildBody({
+            email: payload.email,
+            plainPassword: payload.plainPassword,
+            roles: payload.roles,
+            active: payload.active,
+            createMailUser: payload.createMailUser,
+        });
+
+        await http.post("/admin/super-admin", body);
+    },
+
+    async remove(uuid: string): Promise<void> {
+        await http.delete(`/admin/super-admin/${uuid}`);
+    },
+
+    async setStatus(uuid: string, action: "enable" | "disable"): Promise<void> {
+        await http.patch(`/admin/super-admin/${uuid}/status`, { action });
+    },
+
+    async resetPassword(uuid: string): Promise<{ adminUuid: string; email: string; newPassword: string }> {
+        const response = await http.post(`/admin/super-admin/${uuid}/reset-password`);
+        return response.data.data;
+    },
+
+    hasAnyFilter,
+    get
+
+}

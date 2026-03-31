@@ -11,6 +11,7 @@ import { ForbiddenPage } from "@/pages/ForbiddenPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { AdminsPage } from "@/pages/super-admin/AdminsPage";
 import { AdminDetailsPage } from "@/pages/super-admin/AdminDetailsPage";
+import { TokensPage } from "@/pages/token/TokensPage";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,13 @@ export const router = createBrowserRouter([
                         children: [
                             { path: "/admins", element: <AdminsPage /> },
                             { path: "/admins/:uuid", element: <AdminDetailsPage /> },
+                        ]
+                    },
+
+                    {
+                        element: <RoleGuard anyOf={["ROLE_ADMIN", "ROLE_SUPER_ADMIN"]} />,
+                        children: [
+                            { path: "/tokens", element: <TokensPage /> },
                         ]
                     },
 

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Shield } from "lucide-react";
+import { KeyRound, LayoutDashboard, Shield } from "lucide-react";
 
 export type NavItem = {
     key: string;
@@ -25,6 +25,13 @@ export const navItems: NavItem[] = [
         description: "Créer et gérer les comptes admin.",
         icon: Shield,
         superAdminOnly: true,
+    },
+    {
+        key: "tokens",
+        to: "/tokens",
+        label: "API Tokens",
+        description: "Créer et gérer les API Tokens.",
+        icon: KeyRound,
     }
 ];
 

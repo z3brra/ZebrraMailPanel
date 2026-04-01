@@ -1,4 +1,4 @@
-import type { TokenListItem, PaginationMeta } from "../tokens/types/token.types";
+import type { TokenListItem, PaginationMeta } from "../types/token.types";
 import {
     Card,
     CardContent,
@@ -22,8 +22,15 @@ type TokenListProps = {
     meta: PaginationMeta | null;
     isLoading?: boolean;
     error?: { title: string; message: string } | null;
+
     onPageChange: (page: number) => void;
     onView?: (uuid: string) => void;
+
+    onRotate?: (uuid: string) => Promise<{ uuid: string; token: string }>;
+    onRevoke?: (uuid: string) => Promise<void>;
+    isBusy?: boolean;
+
+    onAfterRotate?: () => void;
 };
 
 export function TokensList({
@@ -32,7 +39,11 @@ export function TokensList({
     isLoading,
     error,
     onPageChange,
-    onView
+    onView,
+    onRotate,
+    onRevoke,
+    isBusy = false,
+    onAfterRotate,
 }: TokenListProps) {
     const totalPages = meta?.totalPages ?? 1;
     const page = meta?.page ?? 1;
@@ -70,6 +81,10 @@ export function TokensList({
                                     key={t.uuid}
                                     token={t}
                                     onView={onView}
+                                    onRotate={onRotate}
+                                    onRevoke={onRevoke}
+                                    isBusy={isBusy}
+                                    onAfterRotate={onAfterRotate}
                                 />
                             )
                         )}

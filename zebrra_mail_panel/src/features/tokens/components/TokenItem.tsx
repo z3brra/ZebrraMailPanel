@@ -1,8 +1,10 @@
-import type { TokenListItem } from "../tokens/types/token.types";
+import type { TokenListItem } from "../types/token.types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { KeyRound, Eye } from "lucide-react";
+
 import { TokenStatusBadge } from "./TokenStatusBadge";
+import { TokenRowActions } from "./TokenRowActions";
 
 function formatDateFR(iso: string) {
     const d = new Date(iso);
@@ -28,12 +30,22 @@ type TokenItemProps = {
     token: TokenListItem;
     onView?: (uuid: string) => void;
     viewDisabled?: boolean;
+
+    onRotate?: (uuid: string) => Promise<{ uuid: string; token: string }>;
+    onRevoke?: (uuid: string) => Promise<void>;
+    isBusy?: boolean;
+
+    onAfterRotate?: () => void;
 }
 
 export function TokenItem({
     token,
     onView,
     viewDisabled = false,
+    onRotate,
+    onRevoke,
+    isBusy = false,
+    onAfterRotate,
 }: TokenItemProps) {
     return (
         <>
@@ -75,6 +87,14 @@ export function TokenItem({
                                 <Eye className="h-4 w-4 mr-2" />
                                 Détails
                             </Button>
+
+                            <TokenRowActions
+                                token={token}
+                                onRotate={onRotate}
+                                onRevoke={onRevoke}
+                                isBusy={isBusy}
+                                onAfterRotate={onAfterRotate}
+                            />
                         </div>
                     </div>
                 </CardContent>

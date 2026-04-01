@@ -8,7 +8,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 
-import type { TokenListQuery } from "../tokens/types/token.types";
+import type { TokenListQuery } from "../types/token.types";
 
 type Props = {
     value: TokenListQuery;

@@ -7,8 +7,11 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 
 import type { TokenListQuery } from "@/features/tokens/types/token.types";
 import { useTokensList } from "@/features/tokens/hooks/useTokenList";
-import { TokensFilter } from "@/features/components/TokensFilters";
-import { TokensList } from "@/features/components/TokensList";
+import { useRotateToken } from "@/features/tokens/hooks/useRotateToken";
+import { useRevokeToken } from "@/features/tokens/hooks/useRevokeToken";
+
+import { TokensFilter } from "@/features/tokens/components/TokensFilters";
+import { TokensList } from "@/features/tokens/components/TokensList";
 
 export function TokensPage() {
     const navigate = useNavigate();
@@ -36,8 +39,23 @@ export function TokensPage() {
         items,
         meta,
         isLoading,
-        error
+        error,
+        refetch
     } = useTokensList({ query: queryDebounced, page, limit });
+
+    const { rotate, isSubmitting: isRotating } = useRotateToken();
+    const {revoke, isSubmitting: isRevoking } = useRevokeToken();
+
+    const isBusy = isRotating || isRevoking;
+
+    async function handleRotate(uuid: string) {
+        return await rotate(uuid);
+    }
+
+    async function handleRevoke(uuid: string) {
+        await revoke(uuid);
+        refetch();
+    }
 
     return (
         <>
@@ -78,6 +96,10 @@ export function TokensPage() {
                     error={error}
                     onPageChange={setPage}
                     onView={(uuid) => navigate(`/tokens/${uuid}`)}
+                    onRotate={handleRotate}
+                    onRevoke={handleRevoke}
+                    isBusy={isBusy}
+                    onAfterRotate={refetch}
                 />
             </div>
         </>

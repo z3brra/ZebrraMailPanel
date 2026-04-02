@@ -13,6 +13,8 @@ import { useRevokeToken } from "@/features/tokens/hooks/useRevokeToken";
 import { TokensFilter } from "@/features/tokens/components/TokensFilters";
 import { TokensList } from "@/features/tokens/components/TokensList";
 
+import { CreateTokenDialog } from "@/features/tokens/components/CreateTokenDialog";
+
 export function TokensPage() {
     const navigate = useNavigate();
 
@@ -68,13 +70,14 @@ export function TokensPage() {
                         </div>
                     </div>
 
-                    <Button
+                    {/* <Button
                         onClick={() => navigate("/tokens/create")}
                         disabled
                     >
                         <Plus className="h-4 w-4 mr-2" />
                         Créer un token
-                    </Button>
+                    </Button> */}
+                    <CreateTokenDialog onCreated={refetch} />
                 </div>
 
                 <TokensFilter

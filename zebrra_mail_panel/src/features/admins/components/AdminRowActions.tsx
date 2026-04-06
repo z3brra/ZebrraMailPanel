@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { ConfirmActionDialog } from "@/components/dialogs/ConfirmActionDialog";
-import { PasswordRevealDialog } from "@/components/dialogs/PasswordRevealDialog";
+// import { PasswordRevealDialog } from "@/components/dialogs/PasswordRevealDialog";
 
 
 import { MoreHorizontal, CheckCircle2, Ban, Trash2, KeyRound } from "lucide-react";
+import { SecretRevealDialog } from "@/components/dialogs/SecretRevealDialog";
 
 type ResetPasswordResponse = {
     adminUuid: string;
@@ -185,14 +186,26 @@ export function AdminRowActions({
             />
 
             {resetResult ? (
-                <PasswordRevealDialog
+                // <PasswordRevealDialog
+                //     open={resetResultOpen}
+                //     onOpenChange={(open) => {
+                //         setResetResultOpen(open);
+                //         if (!open) setResetResult(null);
+                //     }}
+                //     email={resetResult.email}
+                //     password={resetResult.newPassword}
+                // />
+                <SecretRevealDialog
                     open={resetResultOpen}
                     onOpenChange={(open) => {
                         setResetResultOpen(open);
                         if (!open) setResetResult(null);
                     }}
-                    email={resetResult.email}
-                    password={resetResult.newPassword}
+                    title="Nouveau mot de passe"
+                    description="Copie ce mot de passe maitnenant : il ne sera plus affiché ensuite."
+                    label="Compte"
+                    labelValue={resetResult.email}
+                    secret={resetResult.newPassword}
                 />
             ) : null}
         </>

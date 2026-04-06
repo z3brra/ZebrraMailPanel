@@ -26,12 +26,13 @@ import { Separator } from "@/components/ui/separator";
 import { RoleBadge, ActiveBadge, MailboxBadge, DeletedBadge } from "@/features/admins/components/AdminBadges";
 
 import { ConfirmActionDialog } from "@/components/dialogs/ConfirmActionDialog";
-import { PasswordRevealDialog } from "@/components/dialogs/PasswordRevealDialog";
+// import { PasswordRevealDialog } from "@/components/dialogs/PasswordRevealDialog";
 
 import { useAdminDetails } from "@/features/admins/hooks/useAdminDetails";
 import { useAdminStatus } from "@/features/admins/hooks/useAdminStatus";
 import { useDeleteAdmin } from "@/features/admins/hooks/useDeleteAdmin";
 import { useResetAdminPassword } from "@/features/admins/hooks/useResetAdminPassword";
+import { SecretRevealDialog } from "@/components/dialogs/SecretRevealDialog";
 
 function formatDateTimeFR(iso: string) {
     const d = new Date(iso);
@@ -306,14 +307,26 @@ export function AdminDetailsPage() {
             />
 
             {resetResult ? (
-                <PasswordRevealDialog
+                // <PasswordRevealDialog
+                //     open={resetResultOpen}
+                //     onOpenChange={(open) => {
+                //         setResetResultOpen(open);
+                //         if (!open) setResetResult(null);
+                //     }}
+                //     email={resetResult.email}
+                //     password={resetResult.newPassword}
+                // />
+                <SecretRevealDialog
                     open={resetResultOpen}
                     onOpenChange={(open) => {
                         setResetResultOpen(open);
                         if (!open) setResetResult(null);
                     }}
-                    email={resetResult.email}
-                    password={resetResult.newPassword}
+                    title="Nouveau mot de passe"
+                    description="Copie ce mot de passe maitnenant : il ne sera plus affiché ensuite."
+                    label="Compte"
+                    labelValue={resetResult.email}
+                    secret={resetResult.newPassword}
                 />
             ) : null}
         </div>

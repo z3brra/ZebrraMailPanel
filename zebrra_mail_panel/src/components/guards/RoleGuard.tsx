@@ -6,9 +6,9 @@ type RoleGuardProps = {
 };
 
 export function RoleGuard({ anyOf }: RoleGuardProps) {
-    const { isLoading, user } = useAuth();
+    const { isBootstrapping, user } = useAuth();
 
-    if (isLoading) {
+    if (isBootstrapping) {
         return null;
     }
 

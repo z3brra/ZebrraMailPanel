@@ -91,14 +91,14 @@ export function TokenDetailsPage() {
     const [revealOpen, setRevealOpen] = useState<boolean>(false);
     const [rotatedTokenValue, setRotatedTokenValue] = useState<string | null>(null);
 
-    const status = useMemo(() => {
-        if (!token) {
-            return null;
-        }
-        const revoked = !!token.revokedAt;
-        const expired = isExpired(token.expiresAt);
-        return { revoked, expired, active: token.active };
-    }, [token]);
+    // const status = useMemo(() => {
+    //     if (!token) {
+    //         return null;
+    //     }
+    //     const revoked = !!token.revokedAt;
+    //     const expired = isExpired(token.expiresAt);
+    //     return { revoked, expired, active: token.active };
+    // }, [token]);
 
     const scopedDomainNames = useMemo(() => {
         if (!token) {
@@ -114,7 +114,7 @@ export function TokenDetailsPage() {
         return <div className="p-6">UUID manquant.</div>;
     }
     if (isLoading) {
-        return <div className="p-6 text-sm textg-muted-foreground">Chargement...</div>;
+        return <div className="p-6 text-sm text-muted-foreground">Chargement...</div>;
     }
 
     if (error) {
@@ -326,7 +326,7 @@ export function TokenDetailsPage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     {token.scopedDomainUuids.length === 0 ? (
-                        <div className="text-smm text-muted-foreground">
+                        <div className="text-sm text-muted-foreground">
                             Aucun scope : ce token peut accéder à tous les domaines.
                         </div>
                     ) : (

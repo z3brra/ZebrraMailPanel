@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+    front:
+        build:
+            context: /home/admin/ZebrraMailPanel
+            dockerfile: docker/Dockerfile.front
+        container_name: mailpanel_front
+        restart: unless-stopped
+        ports:
+            - "3004:80"
+        networks:
+            - mailpanel_net
+
+networks:
+    mailpanel_net:
+        driver: bridge

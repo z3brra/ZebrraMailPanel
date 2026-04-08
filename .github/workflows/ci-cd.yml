@@ -37,7 +37,7 @@ jobs:
                 key: ${{ secrets.VPS_SSH_KEY }}
                 port: 2222
                 script: |
-                  cd /home/admin/ZebrraMainPanel
+                  cd /home/admin/ZebrraMailPanel
                   git pull
                   cd docker
                   docker-compose -p mailpanel down
